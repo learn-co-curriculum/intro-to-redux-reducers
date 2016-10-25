@@ -116,14 +116,13 @@ As you can likely see, our code is getting pretty long. Who knows how many more 
 
 ...no!
 
-That's where reducer composition comes in. Our current reducer is responsible for the ingredients array and the recipes array, both of which are updated independently. Let's split those out into seperate functions
+That's where reducer composition comes in. Our current reducer is responsible for the ingredients array and the recipes array, both of which are updated independently. Let's split those out into separate functions
 
 ```javascript
 function recipes(state = [], action) {
   switch (action.type) {
     case ADD_RECIPE:
-      return Object.assign({}, state, {
-        recipes: [
+      return [
           ...state.recipes,
           {
             recipe: action.name
@@ -139,9 +138,8 @@ function recipes(state = [], action) {
 function ingredients(state = [], action) {
   switch (action.type) {
     case ADD_PANTRY_INGREDIENT:
-      return Object.assign({}, state, {
-        ingredients: [
-          ...state.ingredients,
+      return [
+          ...state,
           {
             ingredient: action.name,
             quantity: action.quantity
@@ -150,8 +148,7 @@ function ingredients(state = [], action) {
       })
 
       case CHANGE_INGREDIENT_QUANTY:
-        return Object.assign({}, state, {
-          ingredients: state.ingredients.map((ingredient, index) =>{
+        return state.map((ingredient, index) =>{
             if(index === action.index) {
               return Object.assign({}, ingredient, {
                 quantity: ingredient.quantity - action.quantity
@@ -164,9 +161,29 @@ function ingredients(state = [], action) {
       return state
     }
 }
-
-
 ```
+
+With our new split reducers, our initial state is the empty array of recipes and ingredients respectfully versus the original object.
+
+```javascript
+{
+  ingredients: [],
+  recipes: []
+}
+```
+
+**Each reducer is in charge of managing it's own portion of the state.** Now we can create a single reducer function that combines our individual reducers:
+
+```javascript
+function kitchenApp(state = {}, action) {
+  return {
+    recipes: recipes(state.recipes, action),
+    ingredients: ingredients(state.ingredients, action)
+  }
+}
+```
+
+
 
 
 
