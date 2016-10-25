@@ -3,11 +3,11 @@
 ## Objectives
 1. Describe how a reducer takes in an action and returns updated state
 2. Determine why reducers must be pure functions
-3. Organize reducers more cleanly using the reducer composition
+3. Organize reducers more cleanly using reducer composition
 
 ## You've got your actions ... now what?
 
-As we discussed in the previous lab, Redux holds the state for our whole application, and actions contain data and are sent to a store using the dispatch function. Our actions are JavaScript objects that send data to the store.
+As we discussed in the previous lab, Redux holds the state for our whole application. Actions contain data and are sent to a store using the dispatch function. Our actions are JavaScript objects that send data to the store.
 
 ```javascript
 {
@@ -21,21 +21,21 @@ As we discussed in the previous lab, Redux holds the state for our whole applica
 }
 ```
 
-Actions simply convey that something happened, they don't tell the store how to update state based on those actions. **That's where reducers come in**
+Actions simply convey that something happened, they don't tell the store how to update state based on those actions. **That's where reducers come in.**
 
 ## Reducers
 
 A reducer is a pure function that takes in the previous state and the action and returns the next state.
 
-What's a pure function you ask? No, it's not a function that's gone organic vegan and gluten free.
+What's a pure function? No, it's not a function that's gone organic, vegan, and gluten free.
 
-A pure function
+A pure function:
 - Has no side effects
 - Has no mutations
 - Its return value depends entirely on what is passed in
 - It doesn't modify values passed do it
 
-Pure functions don't make calls to an API, change the database or alter the arguments passed in. Given the same arguments, it would return the same value each time.
+Pure functions don't make calls to an API, change the database or alter the arguments passed in. Given the same arguments, it would return the same value every time.
 
 ```javascript
 const square = (x) => {
@@ -106,13 +106,17 @@ function recipeApp(initialState, action) {
 ```
 
 There are two critical things to note:
-1. We don't mutate or later the state. One of first things we mentioned was that reducers return a new state object, they don't modify old state. We create a copy of our state using Object.assign({}). We pass it an empty object, fill it in with the original state of ingredients, and then add a new ingredient and quantity based on the data passed along from the action.
+
+
+1. We don't mutate or alter the state. One of first things we mentioned was that reducers return a new state object, they don't modify old state. We create a copy of our state using `Object.assign({})`. We pass it an empty object, fill it in with the original state of ingredients, and then add a new ingredient and quantity based on the data passed along from the action.
+
+
 2. We return the previous state as a default action. If a reducer receives an unknown action, it must return the previous state. Reducers cannot return undefined.
 
 ## Reducer Composition
-Great, we've set up a reducer that establishes our initial state as on object with an empty ingredients array and an empty recipe array. We're able to add ingredients to our pantry with the ADD_PANTRY_INGREDIENT action. We can add a recipe with the ADD_RECIPE, and finally we can change the quantity of our ingredients in our pantry if we use one.
+Great, we've set up a reducer that establishes our initial state as an object with an empty ingredients array and an empty recipe array. We're able to add ingredients to our pantry with the `ADD_PANTRY_INGREDIENT` action. We can add a recipe with the `ADD_RECIPE` action, and finally we can change the quantity of our ingredients in our pantry if we use `CHANGE_INGREDIENT_QUANTY`.
 
-As you can likely see, our code is getting pretty long. Who knows how many more actions we'll have ... cooking ingredients? Removing expired pantry ingredients? Will our reducer reach into the ether?
+Our reducer is getting pretty long. Who knows how many more actions we'll have ... cooking ingredients? Removing expired pantry ingredients? Will our reducer reach into the ether?
 
 ...no!
 
@@ -163,7 +167,7 @@ function ingredients(state = [], action) {
 }
 ```
 
-With our new split reducers, our initial state is the empty array of recipes and ingredients respectfully versus the original object.
+With our new split reducers, our initial state is the empty array of recipes and ingredients versus the original object.
 
 ```javascript
 {
