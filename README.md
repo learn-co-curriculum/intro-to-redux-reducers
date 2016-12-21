@@ -101,7 +101,7 @@ There are two critical things to note:
 2. We return the previous state as a default action. If a reducer receives an unknown action, it must return the previous state. Reducers cannot return undefined.
 
 
-Now we'll update our reducer to prepare it to receive multiple actions and multiple pieces of state. Our new initial state with have an empty array for ingredients and an empty array for recipes.
+Now we'll update our reducer to prepare it to receive multiple actions and multiple pieces of state. Our new initial state will have an empty array for ingredients and an empty array for recipes.
 
 ```javascript
 function recipeApp({ ingredients: [], recipes: [] }, action) {
@@ -182,7 +182,6 @@ function ingredients(state = [], action) {
             quantity: action.quantity
           }
         ]
-      })
 
       case CHANGE_INGREDIENT_QUANTY:
         return state.map((ingredient, index) =>{
